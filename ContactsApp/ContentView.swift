@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct ContactsView: View {
-    @StateObject private var viewModel = ContactsViewModel()
     
+    @StateObject private var viewModel = ContactsViewModel()
     @State private var searchText = ""
     @State private var showFavorites = false
     @State private var sortOption = "Recently Edited"
@@ -65,7 +65,7 @@ struct ContactsView: View {
                 // Add Contact Button
                 HStack {
                     Spacer()
-                    NavigationLink(destination: ContactFormView(viewModel: ContactFormViewModel(), contactsViewModel: viewModel, contact: nil)) {
+                    NavigationLink(destination: ContactFormView(viewModel: ContactFormViewModel(), contactsViewModel: viewModel)) {
                         Image(systemName: "plus.circle.fill")
                             .font(.largeTitle)
                             .padding()
@@ -113,7 +113,7 @@ struct ContactsView: View {
                 }
             }
             .onAppear {
-                viewModel.fetchContacts()
+               // viewModel.fetchContacts()
             }
             .alert(isPresented: $showDeleteConfirmation) {
                 Alert(
@@ -124,8 +124,8 @@ struct ContactsView: View {
                             if let index = viewModel.contacts.firstIndex(where: { $0.id == contact.id }) {
                                 viewModel.deleteContact(at: IndexSet(integer: index))
                             }
+                            contactToDelete = nil
                         }
-                        contactToDelete = nil
                     },
                     secondaryButton: .cancel {
                         contactToDelete = nil

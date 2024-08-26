@@ -37,7 +37,7 @@ class ContactsViewModel: ObservableObject {
     }
     
     func updateContact(_ contact: Contact) {
-        if let index = contacts.firstIndex(where: { $0.id == contact.id }) {
+        if let index = contacts.firstIndex(where: { $0.id == contact.id }) { //Finds the index of the contact to be updated using its id.
             var updatedContact = contact
             updatedContact.dateEdited = Date.now
             contacts[index] = updatedContact

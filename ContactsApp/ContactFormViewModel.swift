@@ -12,6 +12,7 @@ class ContactFormViewModel: ObservableObject {
     @Published var dateAdded: Date = Date.now
     @Published var dateEdited: Date? = nil
     var isEditing: Bool = false
+    
     @Published var profileImage: UIImage? = nil  // Added this to store the selected image
     
     init(contact: Contact? = nil) {
