@@ -18,10 +18,10 @@ struct Contact: Identifiable, Codable {
     
     var profileImage: UIImage? {
         get {
-            if let data = profileImageData {
-                return UIImage(data: data)
-            }
-            return nil
+//            if let data = profileImageData {
+//                return UIImage(data: data)
+//            }
+         return nil
         }
         set {
             profileImageData = newValue?.jpegData(compressionQuality: 1.0)

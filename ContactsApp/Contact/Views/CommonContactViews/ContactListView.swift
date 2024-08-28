@@ -6,10 +6,11 @@ struct ContactListView: View {
     @Binding var isEditing: Bool
     @Binding var contactToDelete: Contact?
     @Binding var showDeleteConfirmation: Bool
+    var filteredContacts: [Contact]
 
     var body: some View {
         List {
-            ForEach(viewModel.filteredContacts) { contact in
+            ForEach(filteredContacts) { contact in
                 ContactCardView(contact: contact, onFavoriteToggle: { updatedContact in
                     viewModel.updateContact(updatedContact)
                 })

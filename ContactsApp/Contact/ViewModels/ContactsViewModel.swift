@@ -5,83 +5,50 @@ class ContactsViewModel: ObservableObject {
     @Published var contacts: [Contact] = []
     @Published var filteredContacts: [Contact] = []
     @Published var contactToDelete: Contact?
-    
-    @Published var searchText: String = "" {
-        didSet {
-            filterContacts()
-        }
-    }
-    
-    @Published var showFavorites: Bool = false {
-        didSet {
-            filterContacts()
-        }
-    }
-    
-    @Published var sortOption: String = "Recently Edited" {
-        didSet {
-            filterContacts()
-        }
-    }
-    
-    @Published var selectedCategory: String = "All" {
-        didSet {
-            filterContacts()
-        }
-    }
-    
+    @ObservedObject private var filterViewModel = FilterViewModel()
+
     let dataServices = DataServices()
-    let filter = Filter()
     let managerService = ManagerServices()
-    
+
     init() {
         fetchContacts()
     }
-    
+
     func fetchContacts() {
         contacts = dataServices.fetchContacts()
-        filteredContacts = contacts
         filterContacts()
     }
-    
+
     func saveContacts() {
         dataServices.saveContacts(contacts)
     }
-    
+
     func addContact(_ contact: Contact) {
         managerService.addContact(from: self, with: contact)
-        filterContacts()
+        fetchContacts()
     }
-    
+
     func deleteContact(at offsets: IndexSet) {
         managerService.deleteContact(from: self, at: offsets)
-        filterContacts()
+        fetchContacts()
     }
-    
+
     func updateContact(_ contact: Contact) {
         managerService.updateContact(from: self, with: contact)
-        filterContacts()
+        fetchContacts()
     }
-    
-    
-    func filterContacts() {
-        filteredContacts = filter.filteredContacts(
-            contacts: contacts,
-            searchText: searchText,
-            showFavorites: showFavorites,
-            sortOption: sortOption,
-            selectedCategory: selectedCategory
-        )
 
+    func filterContacts() {
+        filteredContacts = filterViewModel.filterContacts(contacts: contacts)
     }
 
     func deleteConfirmation() {
-            if let contact = contactToDelete {
-                if let index = contacts.firstIndex(where: { $0.id == contact.id }) {
-                    deleteContact(at: IndexSet(integer: index))
-                }
-                contactToDelete = nil
+        if let contact = contactToDelete {
+            if let index = contacts.firstIndex(where: { $0.id == contact.id }) {
+                deleteContact(at: IndexSet(integer: index))
             }
-
+            contactToDelete = nil
         }
+    }
+    
 }

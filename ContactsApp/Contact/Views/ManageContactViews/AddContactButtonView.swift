@@ -19,4 +19,6 @@ struct AddContactButtonView: View {
         .padding(.trailing,10)    }
 }
 
-
+#Preview {
+    AddContactButtonView(viewModel: ContactsViewModel())
+}

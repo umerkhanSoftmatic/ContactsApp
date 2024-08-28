@@ -13,6 +13,7 @@ class ContactFormViewModel: ObservableObject {
     @Published var dateEdited: Date? = nil
     @Published var profileImage: UIImage? = nil
     
+    
 
     
     var isEditing: Bool = false
@@ -56,4 +57,5 @@ class ContactFormViewModel: ObservableObject {
                 contactsViewModel.addContact(updatedContact)
             }
         }
+    
 }

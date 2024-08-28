@@ -24,6 +24,7 @@ struct ManagerServices {
         viewModel.contacts.remove(atOffsets: offsets)
         viewModel.saveContacts()
     }
+
     
     
     func updateContact(from viewModel: ContactsViewModel, with contact: Contact) {

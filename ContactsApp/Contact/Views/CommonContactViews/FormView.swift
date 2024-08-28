@@ -4,6 +4,8 @@ struct FormView: View {
     @StateObject var viewModel: ContactFormViewModel
     @Binding var selectedImage: UIImage?
     @Binding var showImagePicker: Bool
+    @State private var showAddCategorySheet = false
+    @State var customCategories: [String] = []
 
     var body: some View {
         Form {
@@ -30,19 +32,47 @@ struct FormView: View {
                 }
             }
 
-            TextField("Name", text: $viewModel.name)
-            TextField("Phone", text: $viewModel.phone)
-            TextField("Email", text: $viewModel.email)
-                .keyboardType(.emailAddress)
-                .autocapitalization(.none)
-            TextField("Address 1", text: $viewModel.address1)
-            TextField("Address 2", text: $viewModel.address2)
-            
-            Picker("Category", selection: $viewModel.category) {
-                ForEach(["Home", "Office", "Friends"], id: \.self) { category in
-                    Text(category).tag(category)
+            Section(header: Text("Contact Information")) {
+                TextField("Name", text: $viewModel.name)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                TextField("Phone", text: $viewModel.phone)
+                    .keyboardType(.numberPad)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                TextField("Email", text: $viewModel.email)
+                    .keyboardType(.emailAddress)
+                    .autocapitalization(.none)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                TextField("Address 1", text: $viewModel.address1)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                TextField("Address 2", text: $viewModel.address2)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+            }
+
+            Section(header: Text("Category")) {
+                Picker("Category", selection: $viewModel.category) {
+                
+                    ForEach(CategoryFilter.allCases, id: \.self) { category in
+                        Text(category.rawValue).tag(category.rawValue)
+                    }
+                    
+                    // Custom categories
+                    ForEach(customCategories, id: \.self) { customCategory in
+                        Text(customCategory).tag(customCategory)
+                    }
+                }
+                .pickerStyle(MenuPickerStyle())
+
+                Button(action: {
+                    showAddCategorySheet.toggle()
+                }) {
+                    Text("Add Custom Category")
+                        .foregroundColor(.blue)
                 }
             }
         }
+        .navigationTitle("Contact Form")
+        .sheet(isPresented: $showAddCategorySheet) {
+            AddCategorySheet(customCategories: $customCategories)
+                }
     }
 }
