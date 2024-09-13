@@ -1,16 +1,18 @@
 import SwiftUI
 
 struct ContactListView: View {
+   
     @ObservedObject var viewModel: ContactsViewModel
+    @StateObject private var vm = ContactFormViewModel()
+   
+    
     @Binding var selectedContact: Contact?
     @Binding var isEditing: Bool
-    @Binding var contactToDelete: Contact?
     @Binding var showDeleteConfirmation: Bool
-    var filteredContacts: [Contact]
 
     var body: some View {
         List {
-            ForEach(filteredContacts) { contact in
+            ForEach(viewModel.contacts) { contact in
                 ContactCardView(contact: contact, onFavoriteToggle: { updatedContact in
                     viewModel.updateContact(updatedContact)
                 })
@@ -26,6 +28,12 @@ struct ContactListView: View {
                     Button {
                         selectedContact = contact
                         isEditing = true
+                        //viewModel.updateContact(contact)
+//                        if let index = contact.firstIndex(where: {$0.id == $0.id})
+//                        {
+//                            //contact.update()
+//                        }
+                        vm.updatedContacts(contactsViewModel: viewModel)
                     } label: {
                         Image(systemName: "pencil")
                     }

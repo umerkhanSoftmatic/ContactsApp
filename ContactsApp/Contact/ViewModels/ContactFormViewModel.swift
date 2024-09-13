@@ -2,6 +2,7 @@ import Foundation
 import UIKit
 
 class ContactFormViewModel: ObservableObject {
+    
     @Published var name: String = ""
     @Published var phone: String = ""
     @Published var email: String = ""
@@ -12,21 +13,15 @@ class ContactFormViewModel: ObservableObject {
     @Published var dateAdded: Date = Date.now
     @Published var dateEdited: Date? = nil
     @Published var profileImage: UIImage? = nil
-    
-    
-
+    var contacts: [Contact] = []
     
     var isEditing: Bool = false
-    let managerService = ManagerServices()
-    
-    
     
     init(contact: Contact? = nil) {
         if let contact = contact {
             self.loadContactData(contact: contact)
         }
     }
-    
     
     
     func loadContactData(contact: Contact) {
@@ -45,14 +40,30 @@ class ContactFormViewModel: ObservableObject {
     
     
     func createContact() -> Contact {
-        return managerService.createContact(from: self)
+        return Contact(
+            id: UUID(),
+            name: self.name,
+            phone: phone,
+            email: email,
+            address1: address1,
+            address2: address2.isEmpty ? nil : address2,
+            isFavorite: isFavorite,
+            category: category,
+            dateAdded: dateAdded,
+            dateEdited: dateEdited,
+            profileImageData: profileImage?.jpegData(compressionQuality: 1.0)  // Save the image as data
+        )
     }
     
     
     func updatedContacts(contactsViewModel: ContactsViewModel) {
-            let updatedContact = createContact()
+        let updatedContact = createContact()
             if isEditing {
-                contactsViewModel.updateContact(updatedContact)
+               // if contacts.firstIndex(where: {$0.id == $0.id}) != nil
+               // {
+                    contactsViewModel.updateContact(updatedContact)
+                //}
+                
             } else {
                 contactsViewModel.addContact(updatedContact)
             }

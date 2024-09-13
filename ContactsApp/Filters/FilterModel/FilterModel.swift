@@ -11,6 +11,14 @@ enum CategoryFilter: String, CaseIterable {
     case home = "Home"
     case office = "Office"
     case friends = "Friends"
+    
+    init(category: String) {
+            if let filter = CategoryFilter(rawValue: category) {
+                self = filter
+            } else {
+                self = .all 
+            }
+        }
 }
 
 enum SortOption: String, CaseIterable {

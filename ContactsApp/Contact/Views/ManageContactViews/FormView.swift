@@ -2,10 +2,9 @@ import SwiftUI
 
 struct FormView: View {
     @StateObject var viewModel: ContactFormViewModel
+    @StateObject var viewModels: AddFiltersViewModel
     @Binding var selectedImage: UIImage?
     @Binding var showImagePicker: Bool
-    @State private var showAddCategorySheet = false
-    @State var customCategories: [String] = []
 
     var body: some View {
         Form {
@@ -50,29 +49,12 @@ struct FormView: View {
 
             Section(header: Text("Category")) {
                 Picker("Category", selection: $viewModel.category) {
-                
-                    ForEach(CategoryFilter.allCases, id: \.self) { category in
-                        Text(category.rawValue).tag(category.rawValue)
-                    }
-                    
-                    // Custom categories
-                    ForEach(customCategories, id: \.self) { customCategory in
-                        Text(customCategory).tag(customCategory)
+                    ForEach(viewModels.categories, id: \.self) { category in
+                        Text(category).tag(category)
                     }
                 }
                 .pickerStyle(MenuPickerStyle())
-
-                Button(action: {
-                    showAddCategorySheet.toggle()
-                }) {
-                    Text("Add Custom Category")
-                        .foregroundColor(.blue)
-                }
             }
         }
-        .navigationTitle("Contact Form")
-        .sheet(isPresented: $showAddCategorySheet) {
-            AddCategorySheet(customCategories: $customCategories)
-                }
     }
 }

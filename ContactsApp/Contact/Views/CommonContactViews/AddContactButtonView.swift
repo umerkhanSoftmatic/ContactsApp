@@ -1,12 +1,15 @@
-
 import SwiftUI
 
 struct AddContactButtonView: View {
     @ObservedObject var viewModel: ContactsViewModel
+    @ObservedObject var viewModels: AddFiltersViewModel
     
     var body: some View {
-       
-        NavigationLink(destination: ContactFormView(viewModel: ContactFormViewModel(), contactsViewModel: viewModel)) {
+        NavigationLink(destination: ContactFormView(
+            viewModel: ContactFormViewModel(),
+            viewModels: viewModels, 
+            contactsViewModel: viewModel
+        )) {
             Image(systemName: "plus.circle.fill")
                 .font(.largeTitle)
                 .padding()
@@ -15,10 +18,7 @@ struct AddContactButtonView: View {
                 .clipShape(Circle())
                 .shadow(radius: 5)
         }
-        .padding(.bottom,-20)
-        .padding(.trailing,10)    }
-}
-
-#Preview {
-    AddContactButtonView(viewModel: ContactsViewModel())
+        .padding(.bottom, -20)
+        .padding(.trailing, 10)
+    }
 }

@@ -18,9 +18,9 @@ struct Contact: Identifiable, Codable {
     
     var profileImage: UIImage? {
         get {
-//            if let data = profileImageData {
-//                return UIImage(data: data)
-//            }
+            if let data = profileImageData {
+                return UIImage(data: data)
+        }
          return nil
         }
         set {

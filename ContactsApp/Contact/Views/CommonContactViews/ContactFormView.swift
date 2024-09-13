@@ -3,9 +3,12 @@ import SwiftUI
 struct ContactFormView: View {
     @Environment(\.presentationMode) var presentationMode
     @StateObject var viewModel: ContactFormViewModel
+    @StateObject var viewModels: AddFiltersViewModel
     @ObservedObject var contactsViewModel: ContactsViewModel
+    
     @State private var showImagePicker = false
     @State private var selectedImage: UIImage? = nil
+    
     let Valid = ContactFormManager()
     
     var contact: Contact?
@@ -13,7 +16,7 @@ struct ContactFormView: View {
     var body: some View {
         VStack {
             
-            FormView(viewModel: viewModel, selectedImage: $selectedImage , showImagePicker: $showImagePicker)
+            FormView(viewModel: viewModel, viewModels: viewModels, selectedImage: $selectedImage , showImagePicker: $showImagePicker)
             
             Button(action: {
                 viewModel.profileImage = selectedImage
